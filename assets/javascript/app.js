@@ -39,28 +39,38 @@ var config = {
 // });
 
 database.ref().on("value", function(snapshot) {
+    //change player 1 card text to player1 name
     if (snapshot.child("players/1").exists()) {
         $(".player1-card-text").text(snapshot.child("players/1/name").val());
     }
+    //when player 1 leaves change card text to waiting for player 1
     else {
         $(".player1-card-text").text("Waiting for Player 1");
     }
+    //change player 2 card text to player2 name
     if (snapshot.child("players/2").exists()) {
         $(".player2-card-text").text(snapshot.child("players/2/name").val());
     }
+    //when player 2 leaves change card text to waiting for player 2
     else {
         $(".player2-card-text").text("Waiting for Player 2");
     }
+    //when the user is an active player, hide the name entry form and show what player they are
     if (activePlayer) {
         $(".section-a form").hide();
         $("h3").text("Hi " + userName + "! You are Player " + userPlayer)
         $("h3").show();        
     }
-    //update h3 to indicate that no room is available
+    //when the lobby is full and the user is not an active player, hide the form and display a message
     if (!activePlayer && snapshot.child("players/1").exists() && snapshot.child("players/2").exists()) {
         $(".section-a form").hide();
         $("h3").text("This room is full!")
         $("h3").show();
+    }
+    //when a player drops out, allow new players to join in
+    if (!activePlayer && (!snapshot.child("players/1").exists() || !snapshot.child("players/2").exists())) {
+        $("h3").hide();
+        $(".section-a form").show();
     }
 });
 
@@ -115,10 +125,3 @@ $(document).on("click", "#btn-start", function() {
     }
 
 });
-
-
-
-
-
-
-
