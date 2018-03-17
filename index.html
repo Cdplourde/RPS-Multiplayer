@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <title>Rock Paper Scissors</title>
+
+</head>
+
+<body>
+    <div class="grid">
+        <!-- Navbar -->
+        <nav class="main-nav">
+            <h1>Rock Paper Scissors</h1>
+        </nav>
+        <!-- Section A -->
+        <section class="section-a">
+            <h3>Hi <span id="userName"></span>! you are Player <span id="userPlayer"></span></h3>
+            <form>
+                <input type="text" id="name-input" placeholder="Name" maxlength="20" required>
+                <input type="submit" id="btn-start">
+            </form>
+        </section>
+        <!-- Section B -->
+        <section class="section-b">
+            <!-- <div id="player-cards-wrapper"> -->
+                <div class="player-card" id="card1">
+                    <p class="player1-card-text">Waiting for Player 1</p>
+                </div>
+                <div class="player-card" id="card2">
+                    <p class="info-card-text"></p>
+                </div>
+                <div class="player-card" id="card3">
+                    <p class="player2-card-text">Waiting for Player 2</p>
+                </div>
+            <!-- </div> -->
+
+        </section>
+        <!-- Section C -->
+        <section class="section-c">
+            <div class="chat-display">
+
+            </div>
+            <div class="chat-box">
+                <input type="text" class="user-chat">
+                <button class="send-message">Send</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Scripts -->
+
+    <!-- JQuery -->
+    <script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+    <script src="assets/javascript/app.js"></script>
+
+</body>
+
+</html>
