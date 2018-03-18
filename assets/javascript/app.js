@@ -1,10 +1,11 @@
 // ************** GLOBAL VARIABLES ************** 
 
 var userPlayer = 0;
-numPlayers = 0;
+var numPlayers = 0;
 var activePlayers = 0;
 var activePlayer = false;
 
+// initialize firebase
 var config = {
     apiKey: "AIzaSyAoC9KuPYiBZEvkBd8R7uftEPMOxEMFCxM",
     authDomain: "rockpaperscissors-204dc.firebaseapp.com",
@@ -14,7 +15,8 @@ var config = {
     messagingSenderId: "151308153526"
   };
   firebase.initializeApp(config);
-  var database = firebase.database();
+
+var database = firebase.database();
 
 // ************** FUNCTIONS ************** 
 
@@ -32,6 +34,8 @@ function setPlayer(num) {
     //makes promise to remove player from database on disconnect
     database.ref("players/" + num).onDisconnect().remove();
 }
+
+// ************** DATABASE EVENTS ************** 
 
 // Update player cards when a player joins
 database.ref("players").on("child_added", function(snapshot) {
@@ -63,7 +67,7 @@ database.ref("players").on("child_removed", function(snapshot) {
     }
 })  
 
-// ************** EVENTS ************** 
+// ************** CLICK EVENTS ************** 
 
 // 'Start button' click event
 $(document).on("click", "#btn-start", function() {
