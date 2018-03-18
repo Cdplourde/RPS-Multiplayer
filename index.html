@@ -18,7 +18,8 @@
         </nav>
         <!-- Section A -->
         <section class="section-a">
-            <h3>Hi <span id="userName"></span>! you are Player <span id="userPlayer"></span></h3>
+            <h3 id="greeting">Hi <span id="userName"></span>! you are Player <span id="userPlayer"></span></h3>
+            <h3 id="instruction"></h3>
             <form>
                 <input type="text" id="name-input" placeholder="Name" maxlength="20" required>
                 
@@ -27,28 +28,25 @@
         </section>
         <!-- Section B -->
         <section class="section-b">
-            <!-- <div id="player-cards-wrapper"> -->
-                <div class="player-card" id="card1">
-                    <p class="player1-card-text">Waiting for Player 1</p>
-                </div>
-                <div class="player-card" id="card2">
-                    <p class="info-card-text"></p>
-                </div>
-                <div class="player-card" id="card3">
-                    <p class="player2-card-text">Waiting for Player 2</p>
-                </div>
-            <!-- </div> -->
-
+            <div class="player-card" id="card1">
+                <p class="player1-card-text">Waiting for player 1</p>
+            </div>
+            <div class="player-card" id="card2">
+                <p class="info-card-text"></p>
+            </div>
+            <div class="player-card" id="card3">
+                <p class="player2-card-text">Waiting for player 2</p>
+            </div>
         </section>
         <!-- Section C -->
         <section class="section-c">
             <div class="chat-display">
-                
+                <!-- chat messages will be places here -->
             </div>
-            <div class="chat-box">
+            <form class="message-box">
                 <input type="text" class="user-chat">
                 <button class="send-message">Send</button>
-            </div>
+            </form>
         </section>
     </div>
 
@@ -61,7 +59,7 @@
     crossorigin="anonymous"></script>
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
-    <script src="assets/javascript/app.js"></script>
+    <script src="assets/javascript/app2.js"></script>
 
 </body>
 

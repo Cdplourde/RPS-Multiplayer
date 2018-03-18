@@ -1,21 +1,9 @@
-// Global Variables
-var userName;
-var userPlayer;
+// ************** GLOBAL VARIABLES ************** 
+
+var userPlayer = 0;
+numPlayers = 0;
+var activePlayers = 0;
 var activePlayer = false;
-
-var player1 = {
-    name: "",
-    wins: 0,
-    losses: 0,
-    ties: 0
-};
-
-var player2 = {
-    name: "",
-    wins: 0,
-    losses: 0,
-    ties: 0
-};
 
 var config = {
     apiKey: "AIzaSyAoC9KuPYiBZEvkBd8R7uftEPMOxEMFCxM",
@@ -26,53 +14,56 @@ var config = {
     messagingSenderId: "151308153526"
   };
   firebase.initializeApp(config);
-
   var database = firebase.database();
-  var player1Ref = database.ref("players/1");
-  var player2Ref = database.ref("players/2");
 
+// ************** FUNCTIONS ************** 
 
-//EVENTS
-//Set what player user is on load
-// database.ref().once("value", function(snapshot) {
-  
-// });
+//sets player number and adds player to database
+function setPlayer(num) {
+    userPlayer = num;
+    database.ref("players/" + num).set({
+        name: userName,
+        player: num,
+        wins: 0,
+        losses: 0,
+        choice: "null",
+        message: "null"
+    });
+    //makes promise to remove player from database on disconnect
+    database.ref("players/" + num).onDisconnect().remove();
+}
 
-database.ref().on("value", function(snapshot) {
-    //change player 1 card text to player1 name
-    if (snapshot.child("players/1").exists()) {
-        $(".player1-card-text").text(snapshot.child("players/1/name").val());
-    }
-    //when player 1 leaves change card text to waiting for player 1
-    else {
-        $(".player1-card-text").text("Waiting for Player 1");
-    }
-    //change player 2 card text to player2 name
-    if (snapshot.child("players/2").exists()) {
-        $(".player2-card-text").text(snapshot.child("players/2/name").val());
-    }
-    //when player 2 leaves change card text to waiting for player 2
-    else {
-        $(".player2-card-text").text("Waiting for Player 2");
-    }
-    //when the user is an active player, hide the name entry form and show what player they are
-    if (activePlayer) {
+// Update player cards when a player joins
+database.ref("players").on("child_added", function(snapshot) {
+    $(".player" + snapshot.val().player + "-card-text").text(snapshot.val().name);
+    numPlayers++;
+    if (userPlayer === 1) {
         $(".section-a form").hide();
-        $("h3").text("Hi " + userName + "! You are Player " + userPlayer)
-        $("h3").show();        
+        $("#greeting").text("Hi " + userName + "! You are Player " + userPlayer)
+        $("#greeting").show();  
     }
-    //when the lobby is full and the user is not an active player, hide the form and display a message
-    if (!activePlayer && snapshot.child("players/1").exists() && snapshot.child("players/2").exists()) {
+    else if (userPlayer === 2) {
         $(".section-a form").hide();
-        $("h3").text("This room is full!")
-        $("h3").show();
+        $("#greeting").text("Hi " + userName + "! You are Player " + userPlayer)
+        $("#greeting").show();  
     }
-    //when a player drops out, allow new players to join in
-    if (!activePlayer && (!snapshot.child("players/1").exists() || !snapshot.child("players/2").exists())) {
-        $("h3").hide();
+    else if (userPlayer === 0 && numPlayers === 2) {
+        $(".section-a form").hide();
+        $("#greeting").text("Oh no! The lobby is full!")
+        $("#greeting").show();          
+    }
+}) 
+// Update player cards when a player leaves
+database.ref("players").on("child_removed", function(snapshot) {
+    $(".player" + snapshot.val().player + "-card-text").text("Waiting for player " + snapshot.val().player);
+    numPlayers--;
+    if (userPlayer === 0 && numPlayers === 1) {
+        $("#greeting").hide();
         $(".section-a form").show();
     }
-});
+})  
+
+// ************** EVENTS ************** 
 
 // 'Start button' click event
 $(document).on("click", "#btn-start", function() {
@@ -81,47 +72,17 @@ $(document).on("click", "#btn-start", function() {
     if ($("#name-input").val().trim() != "") {
         activePlayer = true;
         userName = $("#name-input").val().trim();
-
-        database.ref().once("value", function(snapshot) {
-            // If player 1 doesn't exist, add player
-            if (!snapshot.child("players").hasChild("1")) {
-                userPlayer = 1;
-                //reset player1 object with new values
-                player1.name = userName;
-                player1.wins = 0;
-                player1.losses = 0;
-                player1.ties = 0;
-                //set player1 in database
-                player1Ref.set({
-                    name: player1.name,
-                    wins: player1.wins,
-                    losses: player1.losses,
-                    ties: player1.ties
-                });
-                // remove player 1 from database on disconnect
-                database.ref("players/1").onDisconnect().remove();
-            } 
-            // If player 2 doesn't exist, add player
-            else if (!snapshot.child("players").hasChild("2")) {
-                userPlayer = 2;
-                //reset player1 object with new values
-                player2.name = userName;
-                player2.wins = 0;
-                player2.losses = 0;
-                player2.ties = 0;
-                //set player2 in database
-                player2Ref.set({
-                    name: player2.name,
-                    wins: player2.wins,
-                    losses: player2.losses,
-                    ties: player2.ties
-                });
-                //remove player 2 from database on disconnect
-                database.ref("players/2").onDisconnect().remove();
-            }
-            // Tell player that the room is full
-            else {}
-        })        
     }
-
+    //grab database snapshot
+    database.ref().once("value", function(snapshot) {
+        // If player 1 doesn't exist, add player to database
+        if (!snapshot.child("players").hasChild("1")) {
+            setPlayer(1);
+        }
+        //If player 1 exists, but player 2 doesn't, add player
+        else if (!snapshot.child("players").hasChild("2")) {
+            setPlayer(2);
+        }
+        else {}
+    });
 });
