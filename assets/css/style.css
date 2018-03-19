@@ -48,8 +48,14 @@ h1 {
     text-align: center;
 }
 
+.section-b button {
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
 #card1 {
     grid-column: 1/2;
+    position: relative;
 }
 
 #card2 {
@@ -58,19 +64,28 @@ h1 {
 
 #card3 {
     grid-column: 3/4;
+    position: relative;
 }
-
-/* #player-cards-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    max-width: 1500px;
-} */
 
 .player-card {
     border: 1px solid black;
     width: 200px;
     height: 200px;
     display: inline-block;
+}
+
+.scores {
+    position: absolute;
+    display: inline-block;
+    bottom: 0;
+}
+
+#p1win, #p2win {
+    right: 120px;
+}
+
+#p1lose, #p2lose {
+    right: 28px;
 }
 
 /* Section C */
