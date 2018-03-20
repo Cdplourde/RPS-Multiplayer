@@ -132,8 +132,8 @@ function determineWinner(p1choice, p2choice) {
                 database.ref("players/2/wins").set(p2Wins + 1);
                 database.ref("players/1/losses").set(p1Losses + 1);
 
-                $("#p2wins").text(p2Wins);
-                $("#p1losses").text(p1Losses);
+                $("#p2wins").text(p2Wins + 1);
+                $("#p1losses").text(p1Losses + 1);
 
                 $("#card1").append("<h2>" + p1choice + "</h2>");
                 $("#card3").append("<h2>" + p2choice + "</h2>");
@@ -222,7 +222,7 @@ database.ref("players/1/choice").on("value", function(snapshot) {
             $("#card1 button").remove();
         }
         //if both players have chosen, determine winner
-        else if (snapshot.val() !== "null" && snap.val() !== "null" && snap.exists()) {
+        else if (snapshot.val() !== "null" && snap.val() !== "null" && snap.exists() && snapshot.exists()) {
             determineWinner(snapshot.val(), snap.val());
         }
     })
